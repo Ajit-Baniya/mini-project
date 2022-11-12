@@ -8,7 +8,7 @@ if(isset($_GET["email"])){
 			echo "error : You did not enter a valid email.";
 		}
 		else {
-			$sql ="SELECT EmailId FROM tblusers WHERE EmailId=:email";
+			$sql ="SELECT EmailId FROM users WHERE EmailId=:email";
 	$query= $dbh -> prepare($sql);
 	$query-> bindParam(':email', $email, PDO::PARAM_STR);
 	$query-> execute();
@@ -32,7 +32,7 @@ if(isset($_GET["email"])){
 			echo "error : You did not enter a valid phone number.";
 			return;
 		}
-			$sql ="SELECT ContactNo FROM tblusers WHERE ContactNo=:mobileno";
+			$sql ="SELECT ContactNo FROM users WHERE ContactNo=:mobileno";
 	$query= $dbh -> prepare($sql);
 	$query-> bindParam(':mobileno', $mobileno, PDO::PARAM_STR);
 	$query-> execute();

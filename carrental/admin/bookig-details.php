@@ -2,47 +2,43 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-	{	
-header('location:index.php');
-}
-else{
-if(isset($_REQUEST['eid']))
-	{
-$eid=intval($_GET['eid']);
-$status="2";
-$sql = "UPDATE tblbooking SET Status=:status WHERE  id=:eid";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query-> bindParam(':eid',$eid, PDO::PARAM_STR);
-$query -> execute();
-  echo "<script>alert('Booking Successfully Cancelled');</script>";
-echo "<script type='text/javascript'> document.location = 'canceled-bookings.php; </script>";
-}
+if (strlen($_SESSION['alogin'])==0) {
+    header('location:index.php');
+} else {
+    if (isset($_REQUEST['eid'])) {
+        $eid=intval($_GET['eid']);
+        $status="2";
+        $sql = "UPDATE booking SET Status=:status WHERE  id=:eid";
+        $query = $dbh->prepare($sql);
+        $query -> bindParam(':status', $status, PDO::PARAM_STR);
+        $query-> bindParam(':eid', $eid, PDO::PARAM_STR);
+        $query -> execute();
+        echo "<script>alert('Booking Successfully Cancelled');</script>";
+        echo "<script type='text/javascript'> document.location = 'canceled-bookings.php; </script>";
+    }
 
 
-if(isset($_REQUEST['aeid']))
-	{
-$aeid=intval($_GET['aeid']);
-$status=1;
+    if (isset($_REQUEST['aeid'])) {
+        $aeid=intval($_GET['aeid']);
+        $status=1;
 
-/*
-	$sql1 = "UPDATE tblvehicles SET tblvehicles.Quantity = tblvehicles.Quantity - 1 WHERE tblvehicles.id=:vhid";
-	$query1 = $dbh->prepare($sql);
-	$query1->bindParam(':vhid', $vhid, PDO::PARAM_STR);
-	$query1->execute();
-*/
-$sql = "UPDATE tblbooking INNER JOIN tblvehicles ON (tblbooking.VehicleId=tblvehicles.id) SET tblbooking.Status=:status, tblvehicles.Quantity = tblvehicles.Quantity - 1 WHERE tblbooking.id=:aeid";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query-> bindParam(':aeid',$aeid, PDO::PARAM_STR);
-$query -> execute();
-echo "<script>alert('Booking Successfully Confirmed');</script>";
-echo "<script type='text/javascript'> document.location = 'confirmed-bookings.php'; </script>";
-}
+        /*
+            $sql1 = "UPDATE vehicles SET vehicles.Quantity = vehicles.Quantity - 1 WHERE vehicles.id=:vhid";
+            $query1 = $dbh->prepare($sql);
+            $query1->bindParam(':vhid', $vhid, PDO::PARAM_STR);
+            $query1->execute();
+        */
+        $sql = "UPDATE booking INNER JOIN vehicles ON (booking.VehicleId=vehicles.id) SET booking.Status=:status, vehicles.Quantity = vehicles.Quantity - 1 WHERE booking.id=:aeid";
+        $query = $dbh->prepare($sql);
+        $query -> bindParam(':status', $status, PDO::PARAM_STR);
+        $query-> bindParam(':aeid', $aeid, PDO::PARAM_STR);
+        $query -> execute();
+        echo "<script>alert('Booking Successfully Confirmed');</script>";
+        echo "<script type='text/javascript'> document.location = 'confirmed-bookings.php'; </script>";
+    }
 
 
- ?>
+    ?>
 
 <!doctype html>
 <html lang="en" class="no-js">
@@ -118,20 +114,18 @@ echo "<script type='text/javascript'> document.location = 'confirmed-bookings.ph
 				
 									<tbody>
 
-									<?php 
+									<?php
 $bid=intval($_GET['bid']);
-									$sql = "SELECT tblusers.*,tblbrands.BrandName,tblvehicles.VehiclesTitle,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.VehicleId as vid,tblbooking.Status,tblbooking.PostingDate,tblbooking.id,tblbooking.BookingNumber,
-DATEDIFF(tblbooking.ToDate,tblbooking.FromDate) as totalnodays,tblvehicles.PricePerDay
-									  from tblbooking join tblvehicles on tblvehicles.id=tblbooking.VehicleId join tblusers on tblusers.EmailId=tblbooking.userEmail join tblbrands on tblvehicles.VehiclesBrand=tblbrands.id where tblbooking.id=:bid";
-$query = $dbh -> prepare($sql);
-$query -> bindParam(':bid',$bid, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{				?>	
+    $sql = "SELECT users.*,brands.BrandName,vehicles.VehiclesTitle,booking.FromDate,booking.NumberPlate, booking.ToDate,booking.message,booking.VehicleId as vid,booking.Status,booking.PostingDate,booking.id,booking.BookingNumber,
+DATEDIFF(booking.ToDate,booking.FromDate) as totalnodays,vehicles.PricePerDay
+									  from booking join vehicles on vehicles.id=booking.VehicleId join users on users.EmailId=booking.userEmail join brands on vehicles.VehiclesBrand=brands.id where booking.id=:bid";
+    $query = $dbh -> prepare($sql);
+    $query -> bindParam(':bid', $bid, PDO::PARAM_STR);
+    $query->execute();
+    $results=$query->fetchAll(PDO::FETCH_OBJ);
+    $cnt=1;
+    if ($query->rowCount() > 0) {
+        foreach ($results as $result) {				?>	
 	<h3 style="text-align:center; color:red">#<?php echo htmlentities($result->BookingNumber);?> Booking Details </h3>
 
 		<tr>
@@ -187,22 +181,20 @@ foreach($results as $result)
 </tr>
 <tr>
 <th>Booking Status</th>
-<td><?php 
-if($result->Status==0)
-{
-echo htmlentities('Not Confirmed yet');
-} else if ($result->Status==1) {
-echo htmlentities('Confirmed');
-}
- else{
- 	echo htmlentities('Cancelled');
- }
-										?></td>
-										<th>Last updation Date</th>
-										<td><?php echo htmlentities($result->LastUpdationDate);?></td>
+<td><?php
+        if ($result->Status==0) {
+            echo htmlentities('Not Confirmed yet');
+        } elseif ($result->Status==1) {
+            echo htmlentities('Confirmed');
+        } else {
+            echo htmlentities('Cancelled');
+        }
+            ?></td>
+										<th>Vehicle Number Plate</th>
+										<td><?php echo htmlentities($result->NumberPlate);?></td>
 									</tr>
 
-									<?php if($result->Status==0){ ?>
+									<?php if ($result->Status==0) { ?>
 										<tr>	
 										<td style="text-align:center" colspan="4">
 				<a href="bookig-details.php?aeid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to Confirm this booking')" class="btn btn-primary"> Confirm Booking</a> 
@@ -211,7 +203,9 @@ echo htmlentities('Confirmed');
 </td>
 </tr>
 <?php } ?>
-										<?php $cnt=$cnt+1; }} ?>
+										<?php $cnt=$cnt+1;
+        }
+    } ?>
 										
 									</tbody>
 								</table>

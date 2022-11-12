@@ -15,7 +15,7 @@ if (isset($_POST['signup'])) {
     $password=md5($_POST['password']);
     $enc = "aes-128-gcm";
     $token = openssl_encrypt($email, $enc, time(), 0, openssl_random_pseudo_bytes(openssl_cipher_iv_length($enc)), $tag);
-    $sql="INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password,Token,Verified) VALUES(:fname,:email,:mobile,:password,:token,0)";
+    $sql="INSERT INTO  users(FullName,EmailId,ContactNo,Password,Token,Verified) VALUES(:fname,:email,:mobile,:password,:token,0)";
     $query = $dbh->prepare($sql);
     $query->bindParam(':fname', $fname, PDO::PARAM_STR);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
@@ -30,7 +30,7 @@ if (isset($_POST['signup'])) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'be2019se676@gces.edu.np';
-        $mail->Password   = 'YOUR_APP_PASSWORD';
+        $mail->Password   = 'yhaaekjukbehyoar';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
         $mail->setFrom('be2019se676@gces.edu.np');

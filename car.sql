@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.9.3-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.9.4-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: carrental
 -- ------------------------------------------------------
--- Server version	10.9.3-MariaDB
+-- Server version	10.9.2-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -43,70 +43,73 @@ INSERT INTO `admin` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `tblbooking`
+-- Table structure for table `booking`
 --
 
-DROP TABLE IF EXISTS `tblbooking`;
+DROP TABLE IF EXISTS `booking`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tblbooking` (
+CREATE TABLE `booking` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `BookingNumber` bigint(12) DEFAULT NULL,
   `userEmail` varchar(100) DEFAULT NULL,
   `VehicleId` int(11) DEFAULT NULL,
   `FromDate` varchar(20) DEFAULT NULL,
   `ToDate` varchar(20) DEFAULT NULL,
-  `ReturnDate` varchar(20) NOT NULL,
   `message` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT NULL,
   `PostingDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `LastUpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `ReturnDate` varchar(255) DEFAULT NULL,
+  `NumberPlate` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tblbooking_ibfk_1` (`userEmail`),
-  CONSTRAINT `tblbooking_ibfk_1` FOREIGN KEY (`userEmail`) REFERENCES `tblusers` (`EmailId`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`userEmail`) REFERENCES `users` (`EmailId`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tblbooking`
+-- Dumping data for table `booking`
 --
 
-LOCK TABLES `tblbooking` WRITE;
-/*!40000 ALTER TABLE `tblbooking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tblbooking` ENABLE KEYS */;
+LOCK TABLES `booking` WRITE;
+/*!40000 ALTER TABLE `booking` DISABLE KEYS */;
+INSERT INTO `booking` VALUES
+(2,475273137,'imbibek05@gmail.com',2,'2022-11-12','2022-11-20','need it asap',1,'2022-11-12 08:15:20','2022-11-12 09:32:49','2022-11-20','307258'),
+(3,114687170,'imbibek05@gmail.com',1,'2022-11-16','2022-11-25','need',0,'2022-11-12 09:16:53',NULL,'2022-11-25','297103');
+/*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tblbrands`
+-- Table structure for table `brands`
 --
 
-DROP TABLE IF EXISTS `tblbrands`;
+DROP TABLE IF EXISTS `brands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tblbrands` (
+CREATE TABLE `brands` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `BrandName` varchar(120) NOT NULL,
   `CreationDate` timestamp NULL DEFAULT current_timestamp(),
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tblbrands`
+-- Dumping data for table `brands`
 --
 
-LOCK TABLES `tblbrands` WRITE;
-/*!40000 ALTER TABLE `tblbrands` DISABLE KEYS */;
-INSERT INTO `tblbrands` VALUES
-(1,'Maruti','2022-02-18 16:24:34','2022-05-09 07:22:01'),
-(2,'BMW','2022-02-18 16:24:50','2022-05-09 07:22:05'),
-(3,'Audi','2022-02-18 16:25:03','2022-05-09 07:22:09'),
-(4,'Nissan','2022-02-18 16:25:13','2022-05-09 07:22:13'),
-(5,'Toyota','2022-02-18 16:25:24','2022-05-09 07:22:17'),
-(22,'Tesla','2022-09-24 06:46:08',NULL);
-/*!40000 ALTER TABLE `tblbrands` ENABLE KEYS */;
+LOCK TABLES `brands` WRITE;
+/*!40000 ALTER TABLE `brands` DISABLE KEYS */;
+INSERT INTO `brands` VALUES
+(1,'Mahindra','2022-11-12 06:27:46',NULL),
+(2,'Suzuki','2022-11-12 06:48:41',NULL),
+(3,'Toyota','2022-11-12 07:07:11',NULL),
+(4,'Kia','2022-11-12 07:17:35',NULL),
+(5,'Tesla','2022-11-12 07:42:33',NULL);
+/*!40000 ALTER TABLE `brands` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -140,13 +143,13 @@ INSERT INTO `tblpages` VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `tblusers`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `tblusers`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tblusers` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `FullName` varchar(120) DEFAULT NULL,
   `EmailId` varchar(100) DEFAULT NULL,
@@ -162,31 +165,28 @@ CREATE TABLE `tblusers` (
   `Verified` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `EmailId` (`EmailId`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tblusers`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `tblusers` WRITE;
-/*!40000 ALTER TABLE `tblusers` DISABLE KEYS */;
-INSERT INTO `tblusers` VALUES
-(59,'Bibek Bhattarai','imbibek05@gmail.com','8b1a9953c4611296a827abf8c47804d7','9800000000',NULL,NULL,NULL,NULL,'2022-09-24 11:34:03','2022-09-24 11:35:12','d4vIJnHhRxrOo2lTcXnOcrSlbg==',1),
-(64,'Sonia Copeland','haroy28208@orlydns.com','8b1a9953c4611296a827abf8c47804d7','9800000001',NULL,NULL,NULL,NULL,'2022-09-24 18:12:41','2022-09-24 18:23:58','4LlTcXBqkGAtkTBAsoWPgG8J7CbKOQ==',1),
-(67,'Scarlet Boyer','kadese6501@ploneix.com','8b1a9953c4611296a827abf8c47804d7','9800000005',NULL,NULL,NULL,NULL,'2022-09-24 18:32:14','2022-09-24 18:32:51','cpEgbGMFIagBvUqf4agzSNW+s5V+8Q==',1),
-(68,'Kitra Stout','xifox85971@geekjun.com','8b1a9953c4611296a827abf8c47804d7','9811111111',NULL,NULL,NULL,NULL,'2022-09-24 18:36:38','2022-09-24 18:37:06','Nckw7UO8aMhrD0s5wrPDUZ+foTLQjw==',1);
-/*!40000 ALTER TABLE `tblusers` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES
+(1,'Bibek Bhattarai','imbibek05@gmail.com','698d51a19d8a121ce581499d7b701668','9820202020','28/09/2000','Miruwa','Pokhara','Nepal','2022-11-12 05:49:58','2022-11-12 09:04:54','mPyu6ynAtJ7QfVtgmTDgI7IkWg==',1);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tblvehicles`
+-- Table structure for table `vehicles`
 --
 
-DROP TABLE IF EXISTS `tblvehicles`;
+DROP TABLE IF EXISTS `vehicles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tblvehicles` (
+CREATE TABLE `vehicles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `VehiclesTitle` varchar(150) DEFAULT NULL,
   `VehiclesBrand` int(11) DEFAULT NULL,
@@ -218,27 +218,24 @@ CREATE TABLE `tblvehicles` (
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `VehiclesBrand` (`VehiclesBrand`),
-  CONSTRAINT `tblvehicles_ibfk_1` FOREIGN KEY (`VehiclesBrand`) REFERENCES `tblbrands` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+  CONSTRAINT `vehicles_ibfk_1` FOREIGN KEY (`VehiclesBrand`) REFERENCES `brands` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tblvehicles`
+-- Dumping data for table `vehicles`
 --
 
-LOCK TABLES `tblvehicles` WRITE;
-/*!40000 ALTER TABLE `tblvehicles` DISABLE KEYS */;
-INSERT INTO `tblvehicles` VALUES
-(1,'Maruti Suzuki Wagon R',1,'Maruti Wagon R Latest Updates\r\n\r\nMaruti Suzuki has launched the BS6 Wagon R S-CNG in India. The LXI CNG and LXI (O) CNG variants now cost Rs 5.25 lakh and Rs 5.32 lakh respectively, up by Rs 19,000. Maruti claims a fuel economy of 32.52km per kg. The CNG Wagon R’s continuation in the BS6 era is part of the carmaker’s ‘Mission Green Million’ initiative announced at Auto Expo 2020.\r\n\r\nPreviously, the carmaker had updated the 1.0-litre powertrain to meet BS6 emission norms. It develops 68PS of power and 90Nm of torque, same as the BS4 unit. However, the updated motor now returns 21.79 kmpl, which is a little less than the BS4 unit’s 22.5kmpl claimed figure. Barring the CNG variants, the prices of the Wagon R 1.0-litre have been hiked by Rs 8,000.',3,500,250,'Petrol',2019,5,'rear-3-4-left-589823254_930x620.jpg','tail-lamp-1666712219_930x620.jpg','rear-3-4-right-520328200_930x620.jpg','steering-close-up-1288209207_930x620.jpg','boot-with-standard-luggage-202327489_930x620.jpg',1,1,1,1,1,1,1,1,1,1,1,1,'2022-02-07 07:04:35','2022-05-09 07:22:46'),
-(3,'Audi Q8',3,'As per ARAI, the mileage of Q8 is 0 kmpl. Real mileage of the vehicle varies depending upon the driving habits. City and highway mileage figures also vary depending upon the road conditions.',1,3000,1500,'Petrol',2021,5,'audi-q8-front-view4.jpg','1920x1080_MTC_XL_framed_Audi-Odessa-Armaturen_Spiegelung_CC_v05.jpg','audi1.jpg','1audiq8.jpg','audi-q8-front-view4.jpeg',1,1,1,1,1,1,1,1,1,1,1,1,'2022-02-07 07:19:21','2022-05-09 08:08:41'),
-(4,'Nissan Kicks',4,'Latest Update: Nissan has launched the Kicks 2020 with a new turbocharged petrol engine. You can read more about it here.\r\n\r\nNissan Kicks Price and Variants: The Kicks is available in four variants: XL, XV, XV Premium, and XV Premium(O).',1,800,400,'Petrol',2020,5,'front-left-side-47.jpg','kicksmodelimage.jpg','download.jpg','kicksmodelimage.jpg','',1,NULL,NULL,1,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,'2022-02-07 07:25:28','2022-05-09 07:22:58'),
-(5,'Nissan GT-R',4,' The GT-R packs a 3.8-litre V6 twin-turbocharged petrol, which puts out 570PS of max power at 6800rpm and 637Nm of peak torque. The engine is mated to a 6-speed dual-clutch transmission in an all-wheel-drive setup. The 2+2 seater GT-R sprints from 0-100kmph in less than 3',0,2000,1000,'Petrol',2019,5,'Nissan-GTR-Right-Front-Three-Quarter-84895.jpg','Best-Nissan-Cars-in-India-New-and-Used-1.jpg','2bb3bc938e734f462e45ed83be05165d.jpg','2020-nissan-gtr-rakuda-tan-semi-aniline-leather-interior.jpg','images.jpg',1,1,1,1,1,1,1,1,1,1,1,1,'2022-02-07 07:34:17','2022-05-09 07:23:01'),
-(6,'Nissan Sunny 2020',4,'Value for money product and it was so good It is more spacious than other sedans It looks like a luxurious car.',1,400,200,'CNG',2018,5,'Nissan-Sunny-Right-Front-Three-Quarter-48975_ol.jpg','images (1).jpg','Nissan-Sunny-Interior-114977.jpg','nissan-sunny-8a29f53-500x375.jpg','new-nissan-sunny-photo.jpg',1,1,NULL,1,1,1,1,1,1,1,1,1,'2022-02-07 09:12:49','2022-05-09 07:23:05'),
-(7,'Toyota Fortuner',5,'Toyota Fortuner Features: It is a premium seven-seater SUV loaded with features such as LED projector headlamps with LED DRLs, LED fog lamp, and power-adjustable and foldable ORVMs. Inside, the Fortuner offers features such as power-adjustable driver seat, automatic climate control, push-button stop/start, and cruise control.\r\n\r\nToyota Fortuner Safety Features: The Toyota Fortuner gets seven airbags, hill assist control, vehicle stability control with brake assist, and ABS with EBD.',1,3000,1500,'Petrol',2020,5,'2015_Toyota_Fortuner_(New_Zealand).jpg','toyota-fortuner-legender-rear-quarters-6e57.jpg','zw-toyota-fortuner-2020-2.jpg','download (1).jpg','',NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,1,1,1,'2022-02-07 09:17:46','2022-05-09 07:23:15'),
-(8,'Maruti Suzuki Vitara Brezza',1,'The new Vitara Brezza is a well-rounded package that is feature-loaded and offers good drivability. And it is backed by Maruti’s vast service network, which ensures a peace of mind to customers. The petrol motor could have been more refined and offered more pep.',1,600,300,'Petrol',2018,5,'marutisuzuki-vitara-brezza-right-front-three-quarter3.jpg','marutisuzuki-vitara-brezza-rear-view37.jpg','marutisuzuki-vitara-brezza-dashboard10.jpg','marutisuzuki-vitara-brezza-boot-space59.jpg','marutisuzuki-vitara-brezza-boot-space28.jpg',NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,1,1,'2022-02-07 09:23:11','2022-05-09 07:23:13'),
-(11,'Neon',2,'Neon is latest electric vehicle',4,1000,500,'CNG',2022,2,'1banner-image.jpg','about_services_faq_bg.jpg','about_us_img1.jpg','about_us_img2.jpg','blog_img4.jpg',1,NULL,NULL,1,1,NULL,NULL,1,NULL,NULL,NULL,NULL,'2022-05-09 08:36:51','2022-05-09 08:40:09'),
-(12,'Model X',22,'Tesla\'s Model X has doors that unlock and fully open as the driver approaches, carrying the key. The automatic-open option is a setting that can be turned off or on in Tesla\'s in-car display.',3,1000,20,'Electric',2022,7,'Model-X-Performance-Hero-Desktop-LHD.jpg','istockphoto-1031087768-612x612.jpg','Model-X-Exterior-Hero-Desktop-LHD.jpg','1152716.jpg','MX-Interior-Hero-Desktop-LHD.jpg',1,1,1,1,1,1,1,1,NULL,1,1,1,'2022-09-24 07:00:32','2022-09-24 07:01:55');
-/*!40000 ALTER TABLE `tblvehicles` ENABLE KEYS */;
+LOCK TABLES `vehicles` WRITE;
+/*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
+INSERT INTO `vehicles` VALUES
+(1,'BOLERO CAMPER',1,'The Mahindra Bolero is an SUV-based pickup truck, available in AC and non-AC variants. Single or double cabin models are on offer. It was originally sold as the Bolero Single Cab or Bolero Double Cab, but from early 2002 the Double Cab model has been marketed as the Bolero Camper in India.',6,3000,1000,'Petrol',2020,6,'Bolero-Camper-Gold-1.jpg','Bolero-Camper-Gold-two.jpg','Bolero-Camper-Gold-three.jpg','Bolero-Camper-Gold-four.jpg','Bolero-Camper-Gold-five.jpg',1,NULL,NULL,NULL,1,NULL,NULL,1,1,NULL,NULL,1,'2022-11-12 06:37:03',NULL),
+(2,'Scorpio',1,'The Scorpio just got more powerful. Its explosive power and exceptional torque won’t just ensure better performance and overtaking, but will help you tame the toughest terrains with minimal fuss. Its new 6-speed transmission, superior driving dynamics, and latest-generation brakes make the new, all-powerful Scorpio a powerhouse waiting to be unleashed.',3,6000,1500,'Diesel',2021,10,'1-1-1.jpg','2-1-1.jpg','3-1-1.jpg','4-1-1.jpg','6-1.jpg',1,1,1,NULL,1,1,1,1,1,1,NULL,1,'2022-11-12 06:44:54','2022-11-12 09:32:49'),
+(3,'ALTO',2,'Young and raring to go. Never still, never ordinary. The Alto is just like you. One look, and you will know it’s designed to express your style. Its overall driving experience connects with the fun side of you by bringing alive the joy and excitement when you are behind the wheels. Simply put, it’s easy, compatible and built around you. So, take it out for a spin. And experience an exhilarated lifestyle as it takes you ahead of the curve.',2,1800,300,'Petrol',2015,5,'key_img01.jpg','key_img02.jpg','key_img03.jpg','key_img04.jpg','key_img05.jpg',1,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,'2022-11-12 06:54:44',NULL),
+(4,'Swift',2,'The Suzuki Swift  is a supermini car (B-segment) produced by Suzuki. The vehicle is classified as a B-segment marque in the European single market, a segment referred to as a supermini in the British Isles. Prior to this, the \"Swift\" nameplate had been applied and purchased from Swift Engineering  to the rebadged Suzuki Cultus in numerous export markets since 1983 and became its own model since 2004. Currently, the Swift is positioned between Ignis and Baleno in Suzuki hatchback global lineup. ',2,2000,200,'Petrol',2018,6,'key_img08.jpg','key_img02.jpg','key_img03.jpg','key_img04.jpg','key_img05.jpg',1,NULL,1,NULL,NULL,NULL,1,1,NULL,NULL,1,1,'2022-11-12 07:03:37','2022-11-12 07:04:59'),
+(5,'Fortuner',3,'The Toyota Fortuner, also known as the Toyota SW4, is a mid-size SUV manufactured by the Japanese automaker Toyota since 2004. Built on the Hilux pickup truck platform, it features two/three rows of seats and is available in either rear-wheel drive or four-wheel drive configuration. It is a part of Toyota\'s IMV project for emerging markets, which also includes the Hilux and the Innova.',2,3000,400,'Diesel',2019,5,'power-to-enhance01.jpg','power-to-enhance02.jpg','power-to-enhance12.jpg','power-to-enhance10.jpg','power-to-enhance04.jpg',1,NULL,1,1,NULL,NULL,NULL,1,1,1,1,NULL,'2022-11-12 07:13:45',NULL),
+(6,'Model S',5,'The Tesla Model S is a battery-powered liftback car serving as the flagship model of Tesla, Inc. The Model S features a dual-motor, all-wheel drive layout, although earlier versions of the Model S featured a rear-motor and rear-wheel drive layout. ',2,10000,2000,'Electric',2020,4,'about_us_img3.jpg','2021-tesla-model-s-plaid.jpg','MS-Interior-Hero-Desktop.jpg','about_us_img3.jpg','2021-tesla-model-s-plaid.jpg',1,1,1,1,1,1,1,1,NULL,1,1,1,'2022-11-12 07:48:55',NULL);
+/*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -250,4 +247,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-25  0:23:36
+-- Dump completed on 2022-11-12 15:19:11

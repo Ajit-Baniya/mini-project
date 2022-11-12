@@ -70,9 +70,9 @@ error_reporting(0);
 <?php
 //Query for Listing count
 $searchdata=$_POST['searchdata'];
-$sql = "SELECT tblvehicles.id from tblvehicles 
-join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand 
-where tblvehicles.VehiclesTitle=:search || tblvehicles.FuelType=:search || tblbrands.BrandName=:search || tblvehicles.ModelYear=:search";
+$sql = "SELECT vehicles.id from vehicles 
+join brands on brands.id=vehicles.VehiclesBrand 
+where vehicles.VehiclesTitle=:search || vehicles.FuelType=:search || brands.BrandName=:search || vehicles.ModelYear=:search";
 $query = $dbh -> prepare($sql);
 $query -> bindParam(':search', $searchdata, PDO::PARAM_STR);
 $query->execute();
@@ -84,9 +84,9 @@ $cnt=$query->rowCount();
 </div>
 
 <?php
-$sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles 
-join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand 
-where tblvehicles.VehiclesTitle=:search || tblvehicles.FuelType=:search || tblbrands.BrandName=:search || tblvehicles.ModelYear=:search";
+$sql = "SELECT vehicles.*,brands.BrandName,brands.id as bid  from vehicles 
+join brands on brands.id=vehicles.VehiclesBrand 
+where vehicles.VehiclesTitle=:search || vehicles.FuelType=:search || brands.BrandName=:search || vehicles.ModelYear=:search";
 $query = $dbh -> prepare($sql);
 $query -> bindParam(':search', $searchdata, PDO::PARAM_STR);
 $query->execute();
@@ -124,7 +124,7 @@ if ($query->rowCount() > 0) {
                 <select class="form-control">
                   <option>Select Brand</option>
 
-                  <?php $sql = "SELECT * from  tblbrands ";
+                  <?php $sql = "SELECT * from  brands ";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -160,7 +160,7 @@ if ($query->rowCount() > 0) {
           </div>
           <div class="recent_addedcars">
             <ul>
-<?php $sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand order by id desc limit 4";
+<?php $sql = "SELECT vehicles.*,brands.BrandName,brands.id as bid  from vehicles join brands on brands.id=vehicles.VehiclesBrand order by id desc limit 4";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);

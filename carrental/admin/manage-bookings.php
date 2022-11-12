@@ -11,7 +11,7 @@ if(isset($_REQUEST['eid']))
 	{
 $eid=intval($_GET['eid']);
 $status="2";
-$sql = "UPDATE tblbooking SET Status=:status WHERE  id=:eid";
+$sql = "UPDATE booking SET Status=:status WHERE  id=:eid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query-> bindParam(':eid',$eid, PDO::PARAM_STR);
@@ -26,7 +26,7 @@ if(isset($_REQUEST['aeid']))
 $aeid=intval($_GET['aeid']);
 $status=1;
 
-$sql = "UPDATE tblbooking SET Status=:status WHERE  id=:aeid";
+$sql = "UPDATE booking SET Status=:status WHERE  id=:aeid";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query-> bindParam(':aeid',$aeid, PDO::PARAM_STR);
@@ -136,7 +136,7 @@ $msg="Booking Successfully Confirmed";
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT tblusers.FullName,tblbrands.BrandName,tblvehicles.VehiclesTitle,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.VehicleId as vid,tblbooking.Status,tblbooking.PostingDate,tblbooking.id  from tblbooking join tblvehicles on tblvehicles.id=tblbooking.VehicleId join tblusers on tblusers.EmailId=tblbooking.userEmail join tblbrands on tblvehicles.VehiclesBrand=tblbrands.id  ";
+									<?php $sql = "SELECT users.FullName,brands.BrandName,vehicles.VehiclesTitle,booking.FromDate,booking.ToDate,booking.message,booking.VehicleId as vid,booking.Status,booking.PostingDate,booking.id  from booking join vehicles on vehicles.id=booking.VehicleId join users on users.EmailId=booking.userEmail join brands on vehicles.VehiclesBrand=brands.id  ";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);

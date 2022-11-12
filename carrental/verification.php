@@ -78,7 +78,7 @@ if (strlen($_SESSION['login'])==0) {
 
 <?php
     $useremail=$_SESSION['login'];
-    $sql = "SELECT * from tblusers where EmailId=:useremail";
+    $sql = "SELECT * from users where EmailId=:useremail";
     $query = $dbh -> prepare($sql);
     $query -> bindParam(':useremail', $useremail, PDO::PARAM_STR);
     $query->execute();
@@ -94,7 +94,7 @@ if (strlen($_SESSION['login'])==0) {
                 $inputToken=$_GET['token'];
                 $email=$_SESSION['login'];
                 if ($inputToken == $token) {
-                    $sql1="UPDATE tblusers SET Verified=1 where EmailId=:useremail";
+                    $sql1="UPDATE users SET Verified=1 where EmailId=:useremail";
                     $query1 = $dbh -> prepare($sql1);
                     $query1 -> bindParam(':useremail', $useremail, PDO::PARAM_STR);
                     $query1->execute();

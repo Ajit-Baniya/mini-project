@@ -10,7 +10,7 @@ else{
 if(isset($_GET['del']))
 {
 $id=$_GET['del'];
-$sql = "delete from tblbrands  WHERE id=:id";
+$sql = "delete from brands  WHERE id=:id";
 $query = $dbh->prepare($sql);
 $query -> bindParam(':id',$id, PDO::PARAM_STR);
 $query -> execute();
@@ -115,7 +115,7 @@ $msg="Page data updated  successfully";
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT * from  tblbrands ";
+									<?php $sql = "SELECT * from  brands ";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);

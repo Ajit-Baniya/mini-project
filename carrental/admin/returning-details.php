@@ -8,7 +8,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 	if (isset($_REQUEST['eid'])) {
 		$eid = intval($_GET['eid']);
 		$status = "2";
-		$sql = "UPDATE tblbooking SET Status=:status WHERE  id=:eid";
+		$sql = "UPDATE booking SET Status=:status WHERE  id=:eid";
 		$query = $dbh->prepare($sql);
 		$query->bindParam(':status', $status, PDO::PARAM_STR);
 		$query->bindParam(':eid', $eid, PDO::PARAM_STR);
@@ -22,7 +22,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 		$aeid = intval($_GET['aeid']);
 		$status = 1;
 
-		$sql = "UPDATE tblbooking SET Status=:status WHERE  id=:aeid";
+		$sql = "UPDATE booking SET Status=:status WHERE  id=:aeid";
 		$query = $dbh->prepare($sql);
 		$query->bindParam(':status', $status, PDO::PARAM_STR);
 		$query->bindParam(':aeid', $aeid, PDO::PARAM_STR);
@@ -33,7 +33,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 
 	function getDeadlineDate($bookingNumber, $dbh)
 	{
-		$sql = "SELECT * from tblbooking where BookingNumber=:bookingnumber ";
+		$sql = "SELECT * from booking where BookingNumber=:bookingnumber ";
 		$query = $dbh->prepare($sql);
 		$query->bindParam(':bookingnumber', $bookingNumber, PDO::PARAM_STR);
 		$query->execute();
@@ -49,7 +49,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 
 	function getReturnDaysDifference($BookingNumber, $dbh)
 	{
-		$sql1 = "SELECT * from tblbooking where BookingNumber=:BookingNumber";
+		$sql1 = "SELECT * from booking where BookingNumber=:BookingNumber";
 		$query1 = $dbh->prepare($sql1);
 		$query1->bindParam(':BookingNumber', $BookingNumber, PDO::PARAM_STR);
 		$query1->execute();
@@ -142,9 +142,9 @@ if (strlen($_SESSION['alogin']) == 0) {
 
 												<?php
 												$bid = intval($_GET['bid']);
-												$sql = "SELECT tblusers.*,tblbrands.BrandName,tblvehicles.VehiclesTitle,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.VehicleId as vid,tblbooking.Status,tblbooking.PostingDate,tblbooking.id,tblbooking.BookingNumber,
-DATEDIFF(tblbooking.ToDate,tblbooking.FromDate) as totalnodays,tblvehicles.PricePerDay,tblvehicles.FinePerDay,tblbooking.ReturnDate
-									  from tblbooking join tblvehicles on tblvehicles.id=tblbooking.VehicleId join tblusers on tblusers.EmailId=tblbooking.userEmail join tblbrands on tblvehicles.VehiclesBrand=tblbrands.id where tblbooking.id=:bid";
+												$sql = "SELECT users.*,brands.BrandName,vehicles.VehiclesTitle,booking.FromDate,booking.ToDate,booking.message,booking.VehicleId as vid,booking.Status,booking.PostingDate,booking.id,booking.BookingNumber,
+DATEDIFF(booking.ToDate,booking.FromDate) as totalnodays,vehicles.PricePerDay,vehicles.FinePerDay,booking.ReturnDate
+									  from booking join vehicles on vehicles.id=booking.VehicleId join users on users.EmailId=booking.userEmail join brands on vehicles.VehiclesBrand=brands.id where booking.id=:bid";
 												$query = $dbh->prepare($sql);
 												$query->bindParam(':bid', $bid, PDO::PARAM_STR);
 												$query->execute();

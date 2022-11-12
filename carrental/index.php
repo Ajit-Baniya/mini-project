@@ -74,7 +74,7 @@ error_reporting(0);
           <div role="tabpanel" class="tab-pane active" id="resentnewcar">
 
 <?php
-$sql = "SELECT tblvehicles.VehiclesTitle,tblbrands.BrandName,tblvehicles.PricePerDay,tblvehicles.FuelType,tblvehicles.ModelYear,tblvehicles.id,tblvehicles.SeatingCapacity,tblvehicles.VehiclesOverview,tblvehicles.Vimage1 from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand limit 9";
+$sql = "SELECT vehicles.VehiclesTitle,brands.BrandName,vehicles.PricePerDay,vehicles.FuelType,vehicles.ModelYear,vehicles.id,vehicles.SeatingCapacity,vehicles.VehiclesOverview,vehicles.Vimage1 from vehicles join brands on brands.id=vehicles.VehiclesBrand limit 9";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results = $query->fetchAll(PDO::FETCH_OBJ);

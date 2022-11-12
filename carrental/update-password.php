@@ -3,37 +3,36 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['login'])==0)
-  { 
-header('location:index.php');
-}
-else{
-if(isset($_POST['updatepass']))
-  {
-$password=md5($_POST['password']);
-$newpassword=md5($_POST['newpassword']);
-$email=$_SESSION['login'];
-  $sql ="SELECT Password FROM tblusers WHERE EmailId=:email and Password=:password";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':password', $password, PDO::PARAM_STR);
-$query-> execute();
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
-if($query -> rowCount() > 0)
-{
-$con="update tblusers set Password=:newpassword where EmailId=:email";
-$chngpwd1 = $dbh->prepare($con);
-$chngpwd1-> bindParam(':email', $email, PDO::PARAM_STR);
-$chngpwd1-> bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
-$chngpwd1->execute();
-$msg="Your Password succesfully changed";
-}
-else {
-$error="Your current password is wrong";  
-}
-}
+if (strlen($_SESSION['login'])==0) {
+    header('location:index.php');
+} else {
+    if (isset($_POST['updatepass'])) {
+        if ($_POST['newpassword'] !== $_POST['confirmpassword']) {
+            $error="Your password didn't match";
+        } else {
+            $password=md5($_POST['password']);
+            $newpassword=md5($_POST['newpassword']);
+            $email=$_SESSION['login'];
+            $sql ="SELECT Password FROM users WHERE EmailId=:email and Password=:password";
+            $query= $dbh -> prepare($sql);
+            $query-> bindParam(':email', $email, PDO::PARAM_STR);
+            $query-> bindParam(':password', $password, PDO::PARAM_STR);
+            $query-> execute();
+            $results = $query -> fetchAll(PDO::FETCH_OBJ);
+            if ($query -> rowCount() > 0) {
+                $con="update users set Password=:newpassword where EmailId=:email";
+                $chngpwd1 = $dbh->prepare($con);
+                $chngpwd1-> bindParam(':email', $email, PDO::PARAM_STR);
+                $chngpwd1-> bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
+                $chngpwd1->execute();
+                $msg="Your Password succesfully changed";
+            } else {
+                $error="Your current password is wrong";
+            }
+        }
+    }
 
-?>
+    ?>
   <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -65,18 +64,6 @@ $error="Your current password is wrong";
 <link rel="shortcut icon" href="assets/images/favicon-icon/favicon.png">
 <!-- Google-Font-->
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
-<script type="text/javascript">
-function valid()
-{
-if(document.chngpwd.newpassword.value!= document.chngpwd.confirmpassword.value)
-{
-alert("New Password and Confirm Password Field do not match  !!");
-document.chngpwd.confirmpassword.focus();
-return false;
-}
-return true;
-}
-</script>
   <style>
     .errorWrap {
     padding: 10px;
@@ -120,28 +107,28 @@ return true;
 </section>
 <!-- /Page Header--> 
 
-<?php 
-$useremail=$_SESSION['login'];
-$sql = "SELECT * from tblusers where EmailId=:useremail";
-$query = $dbh -> prepare($sql);
-$query -> bindParam(':useremail',$useremail, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{ ?>
+<?php
+    $useremail=$_SESSION['login'];
+    $sql = "SELECT * from users where EmailId=:useremail";
+    $query = $dbh -> prepare($sql);
+    $query -> bindParam(':useremail', $useremail, PDO::PARAM_STR);
+    $query->execute();
+    $results=$query->fetchAll(PDO::FETCH_OBJ);
+    $cnt=1;
+    if ($query->rowCount() > 0) {
+        foreach ($results as $result) { ?>
 <section class="user_profile inner_pages">
   <div class="container">
     <div class="user_profile_info gray-bg padding_4x4_40">
-      <div class="upload_user_logo"> <img src="assets/images/dealer-logo.jpg" alt="image">
+      <div class="upload_user_logo"> <img src="assets/images/profile<?php echo htmlentities(rand(1, 2));?>.png" alt="image">
       </div>
 
       <div class="dealer_info">
         <h5><?php echo htmlentities($result->FullName);?></h5>
         <p><?php echo htmlentities($result->Address);?><br>
-          <?php echo htmlentities($result->City);?>&nbsp;<?php echo htmlentities($result->Country);}}?></p>
+          <?php echo htmlentities($result->City);?>&nbsp;<?php echo htmlentities($result->Country);
+        }
+    }?></p>
       </div>
     </div>
     <div class="row">
@@ -149,13 +136,12 @@ foreach($results as $result)
         <?php include('includes/sidebar.php');?>
       <div class="col-md-6 col-sm-8">
         <div class="profile_wrap">
-<form name="chngpwd" method="post" onSubmit="return valid();">
+<form name="chngpwd" method="post">
         
             <div class="gray-bg field-title">
               <h6>Update password</h6>
             </div>
-             <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
-        else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
+             <?php if ($error) {?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } elseif ($msg) {?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
             <div class="form-group">
               <label class="control-label">Current Password</label>
               <input class="form-control white_bg" id="password" name="password"  type="password" required>
