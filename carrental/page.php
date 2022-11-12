@@ -42,18 +42,16 @@ include('includes/config.php');
         
 <!--Header-->
 <?php include('includes/header.php');?>
-                      <?php 
+                      <?php
 $pagetype=$_GET['type'];
-$sql = "SELECT type,detail,PageName from pages where type=:pagetype";
+$sql = "SELECT type,detail,PageName from tblpages where type=:pagetype";
 $query = $dbh -> prepare($sql);
-$query->bindParam(':pagetype',$pagetype,PDO::PARAM_STR);
+$query->bindParam(':pagetype', $pagetype, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{ ?>
+if ($query->rowCount() > 0) {
+    foreach ($results as $result) { ?>
 <section class="page-header aboutus_page">
   <div class="container">
     <div class="page-header_wrap">
@@ -77,7 +75,8 @@ foreach($results as $result)
       <h2><?php   echo htmlentities($result->PageName); ?></h2>
       <p><?php  echo $result->detail; ?> </p>
     </div>
-   <?php } }?>
+   <?php }
+    }?>
   </div>
 </section>
 <!-- /About-us--> 
