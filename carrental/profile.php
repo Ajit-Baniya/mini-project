@@ -13,7 +13,8 @@ if (strlen($_SESSION['login'])==0) {
         $city=$_POST['city'];
         $country=$_POST['country'];
         $email=$_SESSION['login'];
-        $sql="update users set FullName=:name,ContactNo=:mobileno,dob=:dob,Address=:adress,City=:city,Country=:country where EmailId=:email";
+        $license=$_POST['licensenumber'];
+        $sql="update users set FullName=:name,ContactNo=:mobileno,dob=:dob,Address=:adress,City=:city,Country=:country,LicenseNo=:license where EmailId=:email";
         $query = $dbh->prepare($sql);
         $query->bindParam(':name', $name, PDO::PARAM_STR);
         $query->bindParam(':mobileno', $mobileno, PDO::PARAM_STR);
@@ -22,6 +23,7 @@ if (strlen($_SESSION['login'])==0) {
         $query->bindParam(':city', $city, PDO::PARAM_STR);
         $query->bindParam(':country', $country, PDO::PARAM_STR);
         $query->bindParam(':email', $email, PDO::PARAM_STR);
+        $query->bindParam(':license', $license, PDO::PARAM_STR);
         $query->execute();
         $msg="Profile Updated Successfully";
     }
@@ -153,6 +155,18 @@ if (strlen($_SESSION['login'])==0) {
               <label class="control-label">Phone Number</label>
               <input class="form-control white_bg" name="mobilenumber" value="<?php echo htmlentities($result->ContactNo);?>" id="phone-number" type="text" required>
             </div>
+            <div class="form-group">
+              <label class="control-label">License Number</label>
+              <?php
+            if (is_null($result->LicenseNo)) {
+                ?>
+              <input class="form-control white_bg" name="licensenumber" value="<?php echo htmlentities($result->LicenseNo);?>" id="license-number" maxlength='6' type="text" required>
+              <?php
+            } else { ?>
+              <input class="form-control white_bg" name="licensenumber" value="<?php echo htmlentities($result->LicenseNo);?>" id="license-number" maxlength='6' type="text" readonly>
+              <?php } ?>
+            </div>
+
             <div class="form-group">
               <label class="control-label">Date of Birth&nbsp;(dd/mm/yyyy)</label>
               <input class="form-control white_bg" value="<?php echo htmlentities($result->dob);?>" name="dob" placeholder="dd/mm/yyyy" id="birth-date" type="text" >
