@@ -29,11 +29,11 @@ if (isset($_POST['signup'])) {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'be2019se676@gces.edu.np';
-        $mail->Password   = 'yhaaekjukbehyoar';
+        $mail->Username   = 'be2019se673@gces.edu.np';
+        $mail->Password   = 'YOUR_PASSWORD_HERE';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
-        $mail->setFrom('be2019se676@gces.edu.np');
+        $mail->setFrom('be2019se673@gces.edu.np');
         $mail->addAddress($email);
         $mail->isHTML(true);
         $mail->Subject = "Car Rental Verification";
