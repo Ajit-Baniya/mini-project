@@ -203,7 +203,7 @@ if (strlen($_SESSION['login']) == 0) {
                       <ul class="vehicle_listing">
                         <?php
                         $useremail = $_SESSION['login'];
-    $sql = "SELECT booking.id as id,vehicles.Vimage1 as Vimage1,vehicles.VehiclesTitle,vehicles.id as vid,brands.BrandName,booking.FromDate,booking.ToDate,booking.ReturnDate,booking.message,booking.Status,vehicles.PricePerDay,vehicles.FinePerDay,DATEDIFF(booking.ToDate,booking.FromDate) as totaldays,booking.BookingNumber  from booking join vehicles on booking.VehicleId=vehicles.id join brands on brands.id=vehicles.VehiclesBrand where booking.userEmail=:useremail order by booking.id desc";
+    $sql = "SELECT booking.id as id,vehicles.Vimage1 as Vimage1,vehicles.VehiclesTitle,vehicles.id as vid,brands.BrandName,booking.FromDate,booking.ToDate,booking.ReturnDate,booking.message,booking.Status, booking.quantity, vehicles.PricePerDay,vehicles.FinePerDay,DATEDIFF(booking.ToDate,booking.FromDate) as totaldays,booking.BookingNumber  from booking join vehicles on booking.VehicleId=vehicles.id join brands on brands.id=vehicles.VehiclesBrand where booking.userEmail=:useremail order by booking.id desc";
     $query = $dbh->prepare($sql);
     $query->bindParam(':useremail', $useremail, PDO::PARAM_STR);
     $query->execute();
@@ -265,6 +265,7 @@ if (strlen($_SESSION['login']) == 0) {
                                     $booked = 0;
                                 } ?></th>
                                 <th>Total Days</th>
+                                <th>Quantity</th>
                                 <th>Rent / Day</th>
                               </tr>
                               <tr>
@@ -289,11 +290,12 @@ if (strlen($_SESSION['login']) == 0) {
                                   }
             ?>
                                 </td>
+                                <td><?php echo $result->quantity; ?></td>
                                 <td> <?php echo "Rs. " . htmlentities($ppd = $result->PricePerDay); ?></td>
                               </tr>
 
                               <tr>
-                                <th colspan="4" style="text-align:center;">Total Fine</th>
+                                <th colspan="5" style="text-align:center;">Total Fine</th>
                                 <td><?php if ($booked == 1) {
                                     echo "Not returned yet";
                                     $totalFine = 0;
@@ -304,8 +306,8 @@ if (strlen($_SESSION['login']) == 0) {
 
 
                               <tr>
-                                <th colspan="4" style="text-align:center;"> Grand Total</th>
-                                <th><?php echo "Rs. " . htmlentities($grandTotal = $tds * $ppd + $totalFine); ?></th>
+                                <th colspan="5" style="text-align:center;"> Grand Total</th>
+                                <th><?php echo "Rs. " . htmlentities($grandTotal = $result->quantity * $tds * $ppd + $totalFine); ?></th>
                               </tr>
                             </table>
                             <hr />

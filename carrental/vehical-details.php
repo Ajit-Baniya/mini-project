@@ -18,6 +18,7 @@ if (isset($_POST['submit'])) {
     $status = 0;
     $vhid = $_GET['vhid'];
     $sql0 = "SELECT * from vehicles where id=:vhid";
+    $quantity = $_POST['quantity'];
     $query0 = $dbh->prepare($sql0);
     $query0->bindParam(':vhid', $vhid, PDO::PARAM_STR);
     $query0->execute();
@@ -44,7 +45,7 @@ if (isset($_POST['submit'])) {
     */
 
     if ($query1->rowCount() == 0) {
-        $sql = "INSERT INTO booking(BookingNumber,userEmail,VehicleId,FromDate,ToDate,ReturnDate,message,Status, NumberPlate) VALUES(:bookingno,:useremail,:vhid,:fromdate,:todate,:todate,:message,:status, :numberPlate)";
+        $sql = "INSERT INTO booking(BookingNumber,userEmail,VehicleId,FromDate,ToDate,ReturnDate,message,Status, NumberPlate, quantity) VALUES(:bookingno,:useremail,:vhid,:fromdate,:todate,:todate,:message,:status, :numberPlate, :quantity)";
         $query = $dbh->prepare($sql);
         $query->bindParam(':bookingno', $bookingno, PDO::PARAM_STR);
         $query->bindParam(':useremail', $useremail, PDO::PARAM_STR);
@@ -54,6 +55,7 @@ if (isset($_POST['submit'])) {
         $query->bindParam(':message', $message, PDO::PARAM_STR);
         $query->bindParam(':status', $status, PDO::PARAM_STR);
         $query->bindParam(':numberPlate', $numberplate, PDO::PARAM_STR);
+        $query->bindParam(':quantity', $quantity, PDO::PARAM_STR);
         $query->execute();
         $lastInsertId = $dbh->lastInsertId();
         if ($lastInsertId) {
@@ -367,27 +369,41 @@ if ($query->rowCount() > 0) {
                     <label>To Date:</label>
                     <input type="date" class="form-control" name="todate" placeholder="To Date" required>
                   </div>
+                    <div class="form-group">
+                    <label>Quantity:</label>
+                    <select class='form-select form-lg mb-3' name='quantity'>
+            <?php
+            for ($i=$available; $i>0; $i--) {
+                if ($i==1) {
+                    echo "<option selected value='$i'>$i</option>";
+                } else {
+                    echo "<option value='$i'>$i</option>";
+                }
+            }
+?>
+                    </section>
+                  </div>
                   <div class="form-group">
                     <textarea rows="4" class="form-control" name="message" placeholder="Message" required></textarea>
                   </div>
                   <?php
-                if ($useremail = $_SESSION['login']) {
-                    $sql = "SELECT * from users where EmailId=:useremail";
-                    $query = $dbh->prepare($sql);
-                    $query->bindParam(':useremail', $useremail, PDO::PARAM_STR);
-                    $query->execute();
-                    $results = $query->fetchAll(PDO::FETCH_OBJ);
-                    $cnt = 1;
-                    if ($query->rowCount() > 0) {
-                        foreach ($results as $result) {
-                            $token = htmlentities($result->Token);
-                            if ($result->Verified == 1) {
-                                $verified = 1;
-                            }
-                        }
-                    }
+    if ($useremail = $_SESSION['login']) {
+        $sql = "SELECT * from users where EmailId=:useremail";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':useremail', $useremail, PDO::PARAM_STR);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+        $cnt = 1;
+        if ($query->rowCount() > 0) {
+            foreach ($results as $result) {
+                $token = htmlentities($result->Token);
+                if ($result->Verified == 1) {
+                    $verified = 1;
+                }
+            }
+        }
 
-                    ?>
+        ?>
                     <div class="form-group">
                       <?php if (!$verified) { ?><a href="verification.php" class="btn uppercase">Verify your email</a><?php } else {
                           if ($available < 1) { ?>
@@ -397,7 +413,7 @@ if ($query->rowCount() > 0) {
                     </div>
                 <?php }
                         }
-                } else { ?>
+    } else { ?>
                 <a href="#loginform" class="btn btn-xs uppercase" data-toggle="modal" data-dismiss="modal">Login For Book</a>
 
               <?php } ?>

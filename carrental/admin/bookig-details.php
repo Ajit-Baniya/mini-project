@@ -28,7 +28,7 @@ if (strlen($_SESSION['alogin'])==0) {
             $query1->bindParam(':vhid', $vhid, PDO::PARAM_STR);
             $query1->execute();
         */
-        $sql = "UPDATE booking INNER JOIN vehicles ON (booking.VehicleId=vehicles.id) SET booking.Status=:status, vehicles.Quantity = vehicles.Quantity - 1 WHERE booking.id=:aeid";
+        $sql = "UPDATE booking INNER JOIN vehicles ON (booking.VehicleId=vehicles.id) SET booking.Status=:status, vehicles.Quantity = vehicles.Quantity - booking.quantity WHERE booking.id=:aeid";
         $query = $dbh->prepare($sql);
         $query -> bindParam(':status', $status, PDO::PARAM_STR);
         $query-> bindParam(':aeid', $aeid, PDO::PARAM_STR);
@@ -116,7 +116,7 @@ if (strlen($_SESSION['alogin'])==0) {
 
 									<?php
 $bid=intval($_GET['bid']);
-    $sql = "SELECT users.*,brands.BrandName,vehicles.VehiclesTitle,booking.FromDate,booking.NumberPlate, booking.ToDate,booking.message,booking.VehicleId as vid,booking.Status,booking.PostingDate,booking.id,booking.BookingNumber,
+    $sql = "SELECT users.*,brands.BrandName,vehicles.VehiclesTitle,booking.FromDate,booking.quantity, booking.NumberPlate, booking.ToDate,booking.message,booking.VehicleId as vid,booking.Status,booking.PostingDate,booking.id,booking.BookingNumber,
 DATEDIFF(booking.ToDate,booking.FromDate) as totalnodays,vehicles.PricePerDay
 									  from booking join vehicles on vehicles.id=booking.VehicleId join users on users.EmailId=booking.userEmail join brands on vehicles.VehiclesBrand=brands.id where booking.id=:bid";
     $query = $dbh -> prepare($sql);
@@ -176,8 +176,10 @@ DATEDIFF(booking.ToDate,booking.FromDate) as totalnodays,vehicles.PricePerDay
 	<td><?php echo htmlentities($ppdays=$result->PricePerDay);?></td>
 </tr>
 <tr>
-	<th colspan="3" style="text-align:center">Grand Total</th>
-	<td><?php echo htmlentities($tdays*$ppdays);?></td>
+	<th>Quantity</th>
+    <td><?php echo htmlentities($result->quantity);?></td>
+	<th>Grand Total</th>
+	<td><?php echo htmlentities($result->quantity*$tdays*$ppdays);?></td>
 </tr>
 <tr>
 <th>Booking Status</th>

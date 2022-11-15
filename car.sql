@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: carrental
 -- ------------------------------------------------------
--- Server version	10.9.2-MariaDB
+-- Server version	10.9.4-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,7 +28,7 @@ CREATE TABLE `admin` (
   `Password` varchar(100) NOT NULL,
   `updationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,10 +62,11 @@ CREATE TABLE `booking` (
   `LastUpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `ReturnDate` varchar(255) DEFAULT NULL,
   `NumberPlate` varchar(6) DEFAULT NULL,
+  `quantity` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tblbooking_ibfk_1` (`userEmail`),
   CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`userEmail`) REFERENCES `users` (`EmailId`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,8 +76,7 @@ CREATE TABLE `booking` (
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
 INSERT INTO `booking` VALUES
-(2,475273137,'imbibek05@gmail.com',2,'2022-11-12','2022-11-20','need it asap',1,'2022-11-12 08:15:20','2022-11-12 09:32:49','2022-11-20','307258'),
-(3,114687170,'imbibek05@gmail.com',1,'2022-11-16','2022-11-25','need',0,'2022-11-12 09:16:53',NULL,'2022-11-25','297103');
+(1,213877040,'imbibek05@gmail.com',1,'2022-11-16','2022-11-18','need it ',1,'2022-11-15 15:26:57','2022-11-15 16:00:19','2022-11-18','664320','6');
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `brands` (
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `tblpages` (
   `type` varchar(255) NOT NULL DEFAULT '',
   `detail` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,9 +163,10 @@ CREATE TABLE `users` (
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `Token` varchar(255) NOT NULL,
   `Verified` tinyint(1) DEFAULT NULL,
+  `LicenseNo` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `EmailId` (`EmailId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +176,13 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(1,'Bibek Bhattarai','imbibek05@gmail.com','698d51a19d8a121ce581499d7b701668','9820202020','28/09/2000','Miruwa','Pokhara','Nepal','2022-11-12 05:49:58','2022-11-12 09:04:54','mPyu6ynAtJ7QfVtgmTDgI7IkWg==',1);
+(1,'Bibek Bhattarai','imbibek05@gmail.com','698d51a19d8a121ce581499d7b701668','9820202020','28/09/2000','Miruwa','Pokhara','Nepal','2022-11-12 05:49:58','2022-11-12 14:58:40','mPyu6ynAtJ7QfVtgmTDgI7IkWg==',1,'373828'),
+(2,'Dipesh Gautam','nirmalgautam12012@gmail.com','202cb962ac59075b964b07152d234b70','9802020202','10/07/1999','Lamachaur','Pokhara','Nepal','2022-11-12 15:03:11','2022-11-12 15:05:14','Cwka48kJyAIuaVxfe7cN3v9uRQcs0VigDs1L',1,'929292'),
+(3,'Jameson Wooten','toyipi6925@kixotic.com','202cb962ac59075b964b07152d234b70','9292929929',NULL,NULL,NULL,NULL,'2022-11-13 03:49:01',NULL,'h1vF3fcMJWv4sUv0365gcAYu5f6D7g==',0,NULL),
+(4,'Byron Mclaughlin','videgik@mailinator.com','202cb962ac59075b964b07152d234b70','9828282828',NULL,NULL,NULL,NULL,'2022-11-13 03:51:24',NULL,'N4ubBLtPNjF1cTGVSoaNlzhhGgEWLg==',0,NULL),
+(5,'Maxwell Hickman','mekeye3095@invodua.com','202cb962ac59075b964b07152d234b70','9282828828',NULL,NULL,NULL,NULL,'2022-11-13 03:53:46',NULL,'3gIki8Z6xFlCorR7qnVSkZf0spADJg==',0,NULL),
+(6,'Kathleen Baker','vawere5379@invodua.com','202cb962ac59075b964b07152d234b70','9828282820',NULL,NULL,NULL,NULL,'2022-11-13 04:01:01',NULL,'WtLwMJHRqyJO4xoMj36GumMxnyc0Yg==',0,NULL),
+(7,'Shad Gallegos','posohoc894@invodua.com','202cb962ac59075b964b07152d234b70','9828282822',NULL,NULL,NULL,NULL,'2022-11-13 04:07:12','2022-11-13 04:37:48','jZOy7Yi882IiqcCZTsy0uc0kDQXo4Q==',1,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +226,7 @@ CREATE TABLE `vehicles` (
   PRIMARY KEY (`id`),
   KEY `VehiclesBrand` (`VehiclesBrand`),
   CONSTRAINT `vehicles_ibfk_1` FOREIGN KEY (`VehiclesBrand`) REFERENCES `brands` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,10 +236,10 @@ CREATE TABLE `vehicles` (
 LOCK TABLES `vehicles` WRITE;
 /*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
 INSERT INTO `vehicles` VALUES
-(1,'BOLERO CAMPER',1,'The Mahindra Bolero is an SUV-based pickup truck, available in AC and non-AC variants. Single or double cabin models are on offer. It was originally sold as the Bolero Single Cab or Bolero Double Cab, but from early 2002 the Double Cab model has been marketed as the Bolero Camper in India.',6,3000,1000,'Petrol',2020,6,'Bolero-Camper-Gold-1.jpg','Bolero-Camper-Gold-two.jpg','Bolero-Camper-Gold-three.jpg','Bolero-Camper-Gold-four.jpg','Bolero-Camper-Gold-five.jpg',1,NULL,NULL,NULL,1,NULL,NULL,1,1,NULL,NULL,1,'2022-11-12 06:37:03',NULL),
+(1,'BOLERO CAMPER',1,'The Mahindra Bolero is an SUV-based pickup truck, available in AC and non-AC variants. Single or double cabin models are on offer. It was originally sold as the Bolero Single Cab or Bolero Double Cab, but from early 2002 the Double Cab model has been marketed as the Bolero Camper in India.',6,3000,1000,'Petrol',2020,6,'Bolero-Camper-Gold-1.jpg','Bolero-Camper-Gold-two.jpg','Bolero-Camper-Gold-three.jpg','Bolero-Camper-Gold-four.jpg','Bolero-Camper-Gold-five.jpg',1,NULL,NULL,NULL,1,NULL,NULL,1,1,NULL,NULL,NULL,'2022-11-12 06:37:03','2022-11-15 16:02:18'),
 (2,'Scorpio',1,'The Scorpio just got more powerful. Its explosive power and exceptional torque won’t just ensure better performance and overtaking, but will help you tame the toughest terrains with minimal fuss. Its new 6-speed transmission, superior driving dynamics, and latest-generation brakes make the new, all-powerful Scorpio a powerhouse waiting to be unleashed.',3,6000,1500,'Diesel',2021,10,'1-1-1.jpg','2-1-1.jpg','3-1-1.jpg','4-1-1.jpg','6-1.jpg',1,1,1,NULL,1,1,1,1,1,1,NULL,1,'2022-11-12 06:44:54','2022-11-12 09:32:49'),
 (3,'ALTO',2,'Young and raring to go. Never still, never ordinary. The Alto is just like you. One look, and you will know it’s designed to express your style. Its overall driving experience connects with the fun side of you by bringing alive the joy and excitement when you are behind the wheels. Simply put, it’s easy, compatible and built around you. So, take it out for a spin. And experience an exhilarated lifestyle as it takes you ahead of the curve.',2,1800,300,'Petrol',2015,5,'key_img01.jpg','key_img02.jpg','key_img03.jpg','key_img04.jpg','key_img05.jpg',1,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,'2022-11-12 06:54:44',NULL),
-(4,'Swift',2,'The Suzuki Swift  is a supermini car (B-segment) produced by Suzuki. The vehicle is classified as a B-segment marque in the European single market, a segment referred to as a supermini in the British Isles. Prior to this, the \"Swift\" nameplate had been applied and purchased from Swift Engineering  to the rebadged Suzuki Cultus in numerous export markets since 1983 and became its own model since 2004. Currently, the Swift is positioned between Ignis and Baleno in Suzuki hatchback global lineup. ',2,2000,200,'Petrol',2018,6,'key_img08.jpg','key_img02.jpg','key_img03.jpg','key_img04.jpg','key_img05.jpg',1,NULL,1,NULL,NULL,NULL,1,1,NULL,NULL,1,1,'2022-11-12 07:03:37','2022-11-12 07:04:59'),
+(4,'Swift',2,'The Suzuki Swift  is a supermini car (B-segment) produced by Suzuki. The vehicle is classified as a B-segment marque in the European single market, a segment referred to as a supermini in the British Isles. Prior to this, the \"Swift\" nameplate had been applied and purchased from Swift Engineering  to the rebadged Suzuki Cultus in numerous export markets since 1983 and became its own model since 2004. Currently, the Swift is positioned between Ignis and Baleno in Suzuki hatchback global lineup. ',10,2000,200,'Petrol',2018,6,'key_img08.jpg','key_img02.jpg','key_img03.jpg','key_img04.jpg','key_img05.jpg',1,NULL,1,NULL,NULL,NULL,NULL,1,NULL,NULL,1,1,'2022-11-12 07:03:37','2022-11-15 16:03:58'),
 (5,'Fortuner',3,'The Toyota Fortuner, also known as the Toyota SW4, is a mid-size SUV manufactured by the Japanese automaker Toyota since 2004. Built on the Hilux pickup truck platform, it features two/three rows of seats and is available in either rear-wheel drive or four-wheel drive configuration. It is a part of Toyota\'s IMV project for emerging markets, which also includes the Hilux and the Innova.',2,3000,400,'Diesel',2019,5,'power-to-enhance01.jpg','power-to-enhance02.jpg','power-to-enhance12.jpg','power-to-enhance10.jpg','power-to-enhance04.jpg',1,NULL,1,1,NULL,NULL,NULL,1,1,1,1,NULL,'2022-11-12 07:13:45',NULL),
 (6,'Model S',5,'The Tesla Model S is a battery-powered liftback car serving as the flagship model of Tesla, Inc. The Model S features a dual-motor, all-wheel drive layout, although earlier versions of the Model S featured a rear-motor and rear-wheel drive layout. ',2,10000,2000,'Electric',2020,4,'about_us_img3.jpg','2021-tesla-model-s-plaid.jpg','MS-Interior-Hero-Desktop.jpg','about_us_img3.jpg','2021-tesla-model-s-plaid.jpg',1,1,1,1,1,1,1,1,NULL,1,1,1,'2022-11-12 07:48:55',NULL);
 /*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
@@ -247,4 +254,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-12 15:19:11
+-- Dump completed on 2022-11-15 21:49:46
